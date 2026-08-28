@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>라이언의 21 - 26 입시결과 검색기 ver.91</title><style>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>라이언의 21 - 26 입시결과 검색기 ver.93</title><style>
 :root{--bg:#020b1b;--bg2:#071a38;--panel:#07172e;--panel2:#0b203e;--line:#23527d;--line2:#2f79a9;--text:#eef7ff;--muted:#9eb5ce;--blue:#17aef2;--blue2:#3757f2;--cyan:#49d6ff;--yellow:#ffe66a;--green:#61e8ae;--red:#ff858f;--orange:#ff9d4d;--shadow:0 18px 45px rgba(0,0,0,.24);--radius:20px}
 *{box-sizing:border-box}html{background:#020b1b;scroll-behavior:smooth}body{margin:0;color:var(--text);font-family:Arial,"Noto Sans KR","Malgun Gothic",sans-serif;background:radial-gradient(circle at 12% 0%,rgba(22,174,242,.20),transparent 28%),radial-gradient(circle at 88% 8%,rgba(55,87,242,.18),transparent 28%),linear-gradient(135deg,#020b1b 0%,#061a35 55%,#092656 100%);min-height:100vh;overflow-x:hidden;font-size:16px;line-height:1.55}
 body.pc:before{content:"";position:fixed;inset:-20%;z-index:-1;background:radial-gradient(ellipse at 20% 40%,rgba(24,181,255,.14),transparent 42%),radial-gradient(ellipse at 74% 60%,rgba(65,81,255,.12),transparent 40%);filter:blur(40px);animation:bgDrift 22s ease-in-out infinite alternate;pointer-events:none}@keyframes bgDrift{0%{transform:translate3d(-2%,0,0) scale(1)}100%{transform:translate3d(3%,-2%,0) scale(1.06)}}
@@ -355,7 +355,7 @@ body.mobile .advanced-filters>summary{min-height:49px}
 
 </style>
 <style id="ver88-base-ui">
-/* ver.91 minor revision: content surfaces and controls only; backdrop and animation layers are unchanged. */
+/* ver.93 minor revision: content surfaces and controls only; backdrop and animation layers are unchanged. */
 :root{
   --v74-base-base-control-radius:4px;
   --v74-base-base-input-radius:7px;
@@ -427,7 +427,7 @@ body.mobile #yearSearch,body.mobile #yearCompare,body.mobile #yearMajor,body.mob
 </style>
 
 <style id="ver88-ui-revision">
-/* ver.91: navy quick-action shell. The existing cosmic backdrop and animations are intentionally preserved. */
+/* ver.93: navy quick-action shell. The existing cosmic backdrop and animations are intentionally preserved. */
 :root{
   --v74-base-navy-950:#031326;
   --v74-base-navy-900:#061a31;
@@ -3062,11 +3062,325 @@ body #quickHome .quick-action:focus-visible{
 }
 </style>
 
+
+
+<style id="ver93-pc-refined-autocomplete">
+/* 검색 도구막대: 해상도별로 줄을 바꿔 어떤 폭에서도 입력칸과 글자가 눌리지 않게 한다. */
+#simpleSearchShell .simple-search-fields{
+  display:grid!important;
+  gap:10px!important;
+  align-items:end!important;
+}
+#simpleSearchShell .simple-search-fields>*{
+  min-width:0!important;
+  width:100%!important;
+}
+#simpleSearchShell .simple-control{
+  position:relative!important;
+  min-width:0!important;
+}
+#simpleSearchShell .simple-control label{
+  display:block!important;
+  min-width:0!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#simpleSearchShell :is(input,select,button){
+  min-width:0!important;
+  max-width:100%!important;
+  line-height:1.25!important;
+}
+#simpleSearchShell :is(input,select){
+  width:100%!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+#simpleAdmissionControl{min-width:0!important}
+#simpleAdmissionInput:disabled{
+  color:rgba(207,230,242,.64)!important;
+  -webkit-text-fill-color:rgba(207,230,242,.64)!important;
+  cursor:not-allowed!important;
+  opacity:.78!important;
+}
+#simpleResetButton{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  min-height:48px!important;
+  white-space:nowrap!important;
+}
+#simpleResetButton svg{width:18px!important;height:18px!important;flex:0 0 18px!important}
+
+/* PC 상단 이동 링크: 제목 바로 아래에서 작고 동일한 크기를 유지한다. */
+html body.pc header .header-nav-stack{
+  position:static!important;
+  inset:auto!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;
+  width:min(100%,clamp(290px,24vw,360px))!important;
+  margin:0!important;
+  align-items:stretch!important;
+  align-self:center!important;
+}
+
+/* 홈에서는 제목 아래에 안내문과 링크 버튼을 한 줄의 좌우 영역으로 정렬한다. */
+html body.pc.quick-home-mode header{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  grid-template-rows:auto auto auto!important;
+  column-gap:clamp(14px,2vw,30px)!important;
+  row-gap:4px!important;
+  align-items:center!important;
+  padding-right:28px!important;
+}
+html body.pc.quick-home-mode header .title-row{
+  grid-column:1/-1!important;
+  grid-row:1!important;
+  width:100%!important;
+}
+html body.pc.quick-home-mode header .subtitle{
+  grid-column:1!important;
+  grid-row:2!important;
+  min-width:0!important;
+  margin-top:6px!important;
+}
+html body.pc.quick-home-mode header .v90-data-notice{
+  grid-column:1!important;
+  grid-row:3!important;
+  min-width:0!important;
+}
+html body.pc.quick-home-mode header .header-nav-stack{
+  grid-column:2!important;
+  grid-row:2/4!important;
+}
+@media(max-width:900px){
+  html body.pc.quick-home-mode header{grid-template-columns:minmax(0,1fr)!important}
+  html body.pc.quick-home-mode header .title-row{grid-column:1!important;grid-row:1!important}
+  html body.pc.quick-home-mode header .subtitle{grid-column:1!important;grid-row:2!important}
+  html body.pc.quick-home-mode header .v90-data-notice{grid-column:1!important;grid-row:3!important}
+  html body.pc.quick-home-mode header .header-nav-stack{
+    grid-column:1!important;
+    grid-row:4!important;
+    justify-self:start!important;
+    margin-top:7px!important;
+  }
+}
+html body.pc header .header-nav-stack>a.return-btn,
+html body.pc header .header-nav-stack>a.switch-btn{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:clamp(34px,3vw,40px)!important;
+  height:clamp(34px,3vw,40px)!important;
+  margin:0!important;
+  padding:5px 6px!important;
+  border-radius:8px!important;
+  font-size:clamp(10px,.75vw,12px)!important;
+  font-weight:850!important;
+  line-height:1.15!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+/* 해상도가 바뀌어도 버튼 글자가 글자 단위로 쪼개지거나 칸 밖으로 넘지 않게 한다. */
+html body.pc :is(button,a,summary){
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  word-break:keep-all;
+  overflow-wrap:normal;
+  hyphens:none;
+}
+html body.pc :is(input,select,textarea){min-width:0;max-width:100%;box-sizing:border-box}
+html body.pc :is(.quick-action strong,.nav-popup-button>span,.feature-title){
+  word-break:keep-all;
+  overflow-wrap:normal;
+  text-wrap:balance;
+}
+
+/* PC 유사 모집단위 비교: 대학·학과 4칸을 화면 폭에 따라 4→2→1열로 전환한다. */
+#panel-major .v93-major-title-note{
+  margin-left:8px!important;
+  color:#75dcff!important;
+  font-size:clamp(.78rem,.95vw,.94rem)!important;
+  font-weight:900!important;
+  line-height:1.35!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+  text-shadow:0 0 14px rgba(61,201,255,.24)!important;
+}
+#panel-major .v93-major-four-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+#panel-major .v93-major-four-grid>*{min-width:0!important;width:100%!important}
+@media(max-width:1199px){
+  #panel-major .v93-major-four-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+  #panel-major .v93-major-four-grid{grid-template-columns:minmax(0,1fr)!important}
+  #panel-major .v93-major-title-note{flex-basis:100%;margin-left:0!important;margin-top:4px!important}
+}
+
+/* 대학명·학과명 자동완성: 입력칸 바로 아래, 5행 높이, 이후 내부 스크롤. */
+.v93-autocomplete{
+  position:absolute!important;
+  z-index:120!important;
+  top:calc(100% + 7px)!important;
+  left:0!important;
+  right:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  max-height:222px!important;
+  padding:6px!important;
+  border:1px solid rgba(103,213,250,.66)!important;
+  border-radius:14px!important;
+  background:linear-gradient(145deg,rgba(15,71,108,.97),rgba(3,30,58,.98))!important;
+  box-shadow:0 18px 42px rgba(0,10,28,.46),inset 0 1px 0 rgba(255,255,255,.12),0 0 24px rgba(56,192,241,.10)!important;
+  backdrop-filter:blur(20px) saturate(136%)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(136%)!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(103,211,246,.66) rgba(3,28,55,.45)!important;
+}
+.v93-autocomplete[hidden]{display:none!important}
+.v93-autocomplete button{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:42px!important;
+  height:42px!important;
+  padding:9px 11px!important;
+  border:0!important;
+  border-radius:9px!important;
+  color:#eaf8ff!important;
+  background:transparent!important;
+  text-align:left!important;
+  font-size:.9rem!important;
+  font-weight:820!important;
+  line-height:1.2!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  cursor:pointer!important;
+}
+.v93-autocomplete button+button{border-top:1px solid rgba(154,220,245,.08)!important}
+.v93-autocomplete button:hover,
+.v93-autocomplete button:focus-visible,
+.v93-autocomplete button[aria-selected="true"]{
+  color:#fff!important;
+  background:linear-gradient(90deg,rgba(48,177,226,.56),rgba(25,104,170,.40))!important;
+  outline:0!important;
+}
+.v93-autocomplete::-webkit-scrollbar{width:10px!important}
+.v93-autocomplete::-webkit-scrollbar-track{
+  border-radius:999px!important;
+  background:rgba(2,24,49,.84)!important;
+}
+.v93-autocomplete::-webkit-scrollbar-thumb{
+  min-height:34px!important;
+  border:2px solid rgba(2,24,49,.84)!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#39c6ef,#1675af)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28)!important;
+}
+.v93-autocomplete::-webkit-scrollbar-thumb:hover{
+  background:linear-gradient(180deg,#63ddff,#218ac7)!important;
+}
+.v93-autocomplete-empty{
+  padding:10px!important;
+  color:rgba(215,236,246,.70)!important;
+  font-size:.84rem!important;
+  font-weight:760!important;
+}
+.v93-select-trigger{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:48px!important;
+  padding:10px 38px 10px 13px!important;
+  border:1px solid rgba(149,211,239,.54)!important;
+  border-radius:14px!important;
+  color:#f2fbff!important;
+  background:linear-gradient(135deg,rgba(14,61,96,.72),rgba(3,31,60,.82))!important;
+  text-align:left!important;
+  font-size:.96rem!important;
+  font-weight:850!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  cursor:pointer!important;
+}
+.v93-select-trigger::after{
+  content:"⌄"!important;
+  position:absolute!important;
+  right:13px!important;
+  top:50%!important;
+  transform:translateY(-55%)!important;
+  color:#cdefff!important;
+  font-size:1rem!important;
+}
+.v93-select-trigger:disabled{
+  color:rgba(207,230,242,.62)!important;
+  cursor:not-allowed!important;
+  opacity:.76!important;
+}
+.v93-select-trigger:not(:disabled):hover,
+.v93-select-trigger:not(:disabled):focus-visible,
+.v93-select-trigger[aria-expanded="true"]{
+  border-color:#72dcff!important;
+  background:linear-gradient(135deg,rgba(17,77,116,.86),rgba(4,39,72,.90))!important;
+  box-shadow:0 0 0 3px rgba(69,210,255,.14)!important;
+  outline:0!important;
+}
+.v93-native-state-select{display:none!important}
+
+@media(min-width:1400px){
+  #simpleSearchShell .simple-search-fields{
+    grid-template-columns:minmax(118px,.72fr) minmax(150px,.86fr) minmax(180px,1.08fr) minmax(190px,1.14fr) minmax(190px,1.16fr) minmax(104px,.58fr) minmax(112px,.62fr) minmax(104px,.58fr)!important;
+  }
+  #simpleSearchShell .simple-search-fields>*{grid-column:auto!important}
+}
+@media(min-width:1100px) and (max-width:1399px){
+  #simpleSearchShell .simple-search-fields{
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  }
+  #simpleSearchShell .simple-search-fields>*{grid-column:auto!important}
+}
+@media(min-width:761px) and (max-width:1099px){
+  #simpleSearchShell .simple-search-fields{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #simpleSearchShell .simple-search-fields>*{grid-column:auto!important}
+}
+@media(max-width:760px){
+  #simpleSearchShell .simple-search-fields{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  #simpleSearchShell .simple-search-fields>*{grid-column:1/-1!important}
+}
+</style>
+
 </head><body class="pc quick-home-mode">
 <div class="cosmic-backdrop" aria-hidden="true"><span class="cosmic-nebula"></span><span class="cosmic-aurora a"></span><span class="cosmic-aurora b"></span><span class="cosmic-stars far"></span><span class="cosmic-stars near"></span><span class="cosmic-star-glow"></span><i class="cosmic-meteor m1"></i><i class="cosmic-meteor m2"></i><i class="cosmic-meteor m3"></i><i class="cosmic-meteor m4"></i></div>
 <header>
-  <div class="header-nav-stack"><a class="return-btn" href="https://seiryu1318.github.io/Ergosphere_Ryan/" aria-label="라이언의 대입포털로 돌아가기">라이언의 대입포털로 돌아가기 ↗</a><a class="switch-btn" href="https://seiryu1318.github.io/admission_RyanM/">모바일 버전 ↗</a></div>
-  <div class="title-row"><img class="brand-mascot" src="data:image/jpeg;base64,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" alt="라이언 캐릭터" width="96" height="96" decoding="async" fetchpriority="high"><h1>라이언의 21 - 26 입시결과 검색기 <span class="ver">ver.91</span></h1></div>
+  <div class="header-nav-stack"><a class="return-btn" href="https://seiryu1318.github.io/Ergosphere_Ryan/" aria-label="라이언의 대입포털로 돌아가기">라이언의 대입포털로 돌아가기</a><a class="switch-btn" href="https://seiryu1318.github.io/admission_RyanM/">모바일 버전</a></div>
+  <div class="title-row"><img class="brand-mascot" src="data:image/jpeg;base64,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" alt="라이언 캐릭터" width="96" height="96" decoding="async" fetchpriority="high"><h1>라이언의 21 - 26 입시결과 검색기 <span class="ver">ver.93</span></h1></div>
   <p class="subtitle">학생부종합전형은 정성평가이므로, 참고만 하시기 바랍니다.</p><p class="v90-data-notice">본 자료는 일부 정보 누락 가능성도 있습니다. 공식 자료와 최종 확인하십시오.</p>
   
 </header>
@@ -3117,7 +3431,7 @@ body #quickHome .quick-action:focus-visible{
     <div class="help-grid">
       <article class="help-card"><h3>입결 검색</h3><p>연도, 지역, 대학, 전형, 계열과 학과를 조합해 입시 결과를 찾습니다. 계열은 원본 자료의 구분값을 우선 적용합니다.</p><p class="ex"><span class="hl">예시</span> 고려대와 2025년, 2026년을 선택하면 연도별 50%와 70% 결과를 볼 수 있습니다.</p></article>
       <article class="help-card"><h3>대학 간 비교</h3><p>최대 3개 대학을 같은 조건으로 비교하고 연도별 평균을 확인할 수 있습니다.</p><p class="ex"><span class="hl">예시</span> 서울대, 연세대, 고려대와 컴퓨터 관련 학과를 입력하면 대학별 평균과 변화가 표시됩니다.</p></article>
-      <article class="help-card"><h3>유사 모집단위 비교</h3><p>대학명과 학과 키워드를 각각 최대 3개까지 입력해 비슷한 모집단위를 비교합니다. 범위가 지나치게 넓은 단어는 결과의 정확도를 위해 제한될 수 있습니다.</p><p class="ex"><span class="hl">예시</span> 성균관대와 서울시립대에 환경 관련 키워드를 입력하면 해당 모집단위만 모아 볼 수 있습니다.</p></article>
+      <article class="help-card"><h3>유사 모집단위 비교</h3><p>대학명과 학과명을 각각 최대 4개까지 입력해 비슷한 모집단위를 비교합니다. 범위가 지나치게 넓은 단어는 결과의 정확도를 위해 제한될 수 있습니다.</p><p class="ex"><span class="hl">예시</span> 성균관대와 서울시립대에 환경 관련 키워드를 입력하면 해당 모집단위만 모아 볼 수 있습니다.</p></article>
       <article class="help-card"><h3>지역 비교</h3><p>두 지역을 선택해 평균 등급과 등급대별 분포를 비교합니다.</p><p class="ex"><span class="hl">예시</span> 서울과 경기를 선택하고 자연계 조건을 지정하면 지역별 평균과 분포가 표시됩니다.</p></article>
       <article class="help-card"><h3>등급 기반 추천</h3><p>전 교과 등급과 전형, 지역, 계열, 학과, 연도 기준을 선택한 뒤 <span class="hl">추천 보기</span>를 누르세요. PC에서는 첫 조회 후 조건을 바꾸면 결과가 자동으로 갱신됩니다.</p><p class="ex"><span class="hl">예시</span> 전 교과 2.75, 교과와 종합, 자연계, 간호, 최근 3년 평균을 선택하면 기준 50% 결과와의 차이에 따라 상향, 적정, 하향으로 나뉩니다.</p></article>
       <article class="help-card"><h3>본교 입결 9등급</h3><p>본교 결과 메뉴를 처음 열 때 비밀번호를 한 번 입력합니다. 인증 후에는 현재 페이지에서 9등급과 5등급 메뉴를 모두 이용할 수 있습니다. 2019년부터 2025년까지의 본교 수시 지원 결과를 9등급 기준으로 검색합니다.</p><p class="ex"><span class="hl">예시</span> 최근 3년, 종합, 간호, 전 교과 2.0에서 3.0까지의 조건을 선택합니다.</p></article>
@@ -3132,9 +3446,9 @@ body #quickHome .quick-action:focus-visible{
 <div id="simpleSearchShell" class="simple-search-shell" aria-label="간편 입결 검색">
   <div class="simple-search-fields">
     <div class="simple-control"><label for="simpleYear">조회 연도</label><select id="simpleYear"><option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="recent2">최근 2년</option><option value="recent4">최근 4년</option><option value="all">전체 연도</option></select></div>
-    <div class="simple-control"><label for="simpleType">전형</label><select id="simpleType"><option value="all">전체 전형</option><option value="교과">교과</option><option value="종합">종합</option><option value="논술">논술</option></select></div>
-    <div class="simple-control simple-control-wide"><label for="simpleUniv">대학</label><input id="simpleUniv" type="search" autocomplete="off" placeholder="대학명을 입력하세요"></div>
-    <div class="simple-control simple-control-wide"><label for="simpleDept">학과</label><input id="simpleDept" type="search" autocomplete="off" placeholder="학과 키워드를 입력하세요"></div>
+    <div class="simple-control"><label for="simpleType">전형 성격</label><select id="simpleType"><option value="all">전체 전형 성격</option><option value="교과">교과</option><option value="종합">종합</option><option value="논술">논술</option></select></div>
+    <div class="simple-control simple-control-wide"><label for="simpleUniv">대학명</label><input id="simpleUniv" type="search" autocomplete="off" placeholder="대학명을 입력하세요"></div>
+    <div class="simple-control simple-control-wide"><label for="simpleDept">학과명</label><input id="simpleDept" type="search" autocomplete="off" placeholder="학과명을 입력하세요"></div>
     <button type="button" id="simpleSearchButton" class="simple-main-button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><span>검색</span></button>
     <button type="button" id="simpleAdvancedButton" class="simple-icon-button" aria-expanded="false" aria-controls="searchLegacyFilters"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h3M11 12h9M4 18h8M16 18h4"/><circle cx="16" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="14" cy="18" r="2"/></svg><span>상세 조건</span></button>
   </div>
@@ -3153,23 +3467,23 @@ body #quickHome .quick-action:focus-visible{
         <h2 class="section-title">입결 검색</h2>
         <div class="mode-tabs"><button class="pill-btn active" data-mode="keyword">A. 키워드 검색</button><button class="pill-btn" data-mode="select">B. 대학별 선택 검색</button></div>
         <div class="checks"><label class="check-pill"><input id="qExcludeRegional" type="checkbox">지역인재 제외</label><label class="check-pill"><input id="qExcludeWomen" type="checkbox">여대 제외</label><label class="check-pill"><input id="qExact" type="checkbox">정확히 일치</label></div>
-        <div class="field"><label>지역 구분 <span class="optional">선택사항</span></label><select id="qRegion"><option value="">전체 지역 (목록에서 선택)</option></select></div>
+        <div class="field"><label>지역 구분</label><select id="qRegion"><option value="">전체 지역 (목록에서 선택)</option></select></div>
         <div id="keywordBox" class="subbox">
           <div class="guide">지역, 대학, 전형, 계열, 학과 중 하나 이상 입력한 뒤 <span class="hl">키워드 검색</span>을 누르세요.</div>
           <div class="field"><label><span class="step">1</span>대학명 입력</label><input id="qUniv" placeholder="예: 고려대, 동국대, 연세대"></div>
           <div class="field"><div class="sub-label">전형 구분</div><div class="type-row" id="typeSearch"></div></div>
-          <div class="field"><label><span class="step">2</span>전형명 <span class="optional">선택사항</span></label><select id="qAdmission"><option value="">전체 전형명 (목록에서 선택)</option></select></div>
-          <div class="field"><label><span class="step">3</span>계열 구분 <span class="optional">선택사항</span></label><div class="checks" id="qTracks"></div></div>
-          <div class="field"><label><span class="step">4</span>세부 계열 <span class="optional">선택사항</span></label><select id="qField"><option value="">전체 세부 계열 (목록에서 선택)</option></select></div>
-          <div class="field"><label><span class="step">5</span>학과명 입력 <span class="optional">선택사항</span></label><input id="qDept" placeholder="예: 간호, 컴퓨터, 경영"></div>
+          <div class="field"><label><span class="step">2</span>전형명</label><select id="qAdmission"><option value="">전체 전형명 (목록에서 선택)</option></select></div>
+          <div class="field"><label><span class="step">3</span>계열 구분</label><div class="checks" id="qTracks"></div></div>
+          <div class="field"><label><span class="step">4</span>세부 계열</label><select id="qField"><option value="">전체 세부 계열 (목록에서 선택)</option></select></div>
+          <div class="field"><label><span class="step">5</span>학과명 입력</label><input id="qDept" placeholder="예: 간호, 컴퓨터, 경영"></div>
           <div class="btn-row"><button class="primary" id="searchBtn">키워드 검색</button><button class="secondary" id="searchClear">초기화</button></div>
         </div>
         <div id="selectBox" class="subbox" style="display:none">
           <div class="guide">대학명을 입력한 뒤 드롭다운을 차례로 선택하고 <span class="hl">선택 검색</span>을 누르세요.</div>
           <div class="field"><label><span class="step">1</span>대학명 입력</label><input id="sUniv" placeholder="예: 고려대"></div>
-          <div class="field"><label><span class="step">2</span>전형성격 <span class="optional">선택사항</span></label><select id="sType"><option value="">전체 전형성격 (목록에서 선택)</option></select></div>
-          <div class="field"><label><span class="step">3</span>전형명 <span class="optional">선택사항</span></label><select id="sAdmission"><option value="">전체 전형명 (목록에서 선택)</option></select></div>
-          <div class="field"><label><span class="step">4</span>모집단위 <span class="optional">선택사항</span></label><select id="sDept"><option value="">전체 모집단위 (목록에서 선택)</option></select></div>
+          <div class="field"><label><span class="step">2</span>전형성격</label><select id="sType"><option value="">전체 전형성격 (목록에서 선택)</option></select></div>
+          <div class="field"><label><span class="step">3</span>전형명</label><select id="sAdmission"><option value="">전체 전형명 (목록에서 선택)</option></select></div>
+          <div class="field"><label><span class="step">4</span>모집단위</label><select id="sDept"><option value="">전체 모집단위 (목록에서 선택)</option></select></div>
           <div class="btn-row"><button class="primary" id="selectSearchBtn">선택 검색</button><button class="secondary" id="selectClear">초기화</button></div>
         </div>
       </div>
@@ -3190,9 +3504,9 @@ body #quickHome .quick-action:focus-visible{
       <div><div class="year-row" id="yearCompare"></div><p class="status">전체, 단년, 복수 연도를 선택할 수 있습니다.</p></div>
       <div>
         <div class="field"><div class="sub-label">전형 구분</div><div class="type-row" id="typeCompare"></div></div>
-        <div class="field"><label>계열 구분 <span class="optional">선택사항</span></label><div class="checks" id="cmpTracks"></div></div>
+        <div class="field"><label>계열 구분</label><div class="checks" id="cmpTracks"></div></div>
         <div class="checks"><label class="check-pill"><input id="cmpExact" type="checkbox">정확히 일치</label><label class="check-pill"><input id="cmpExcludeWomen" type="checkbox">여대 제외</label></div>
-        <div class="field"><label><span class="step">1</span>학과명 입력 <span class="optional">선택사항</span></label><input id="cmpDept" placeholder="예: 간호, 경영, 컴퓨터"></div>
+        <div class="field"><label><span class="step">1</span>학과명 입력</label><input id="cmpDept" placeholder="예: 간호, 경영, 컴퓨터"></div>
         <div class="kpi-grid"><div class="field"><label><span class="step">2</span>대학 1</label><input id="cmpU1" placeholder="예: 서울대"></div><div class="field"><label><span class="step">3</span>대학 2</label><input id="cmpU2" placeholder="예: 연세대"></div><div class="field"><label><span class="step">4</span>대학 3</label><input id="cmpU3" placeholder="예: 고려대"></div></div>
         <div class="btn-row"><button id="compareBtn" class="primary">비교하기</button><button id="compareClear" class="secondary">초기화</button></div>
       </div>
@@ -3203,18 +3517,18 @@ body #quickHome .quick-action:focus-visible{
 
 <section role="tabpanel" id="panel-major" class="tab-panel">
   <div class="panel">
-    <h2 class="section-title">비교 연도와 조건</h2>
+    <h2 class="section-title">비교 연도와 조건 <span class="v93-major-title-note">대학명 1개와 학과명 1개만 입력해도 비교할 수 있습니다.</span></h2>
     <div class="wide-grid">
-      <div><div class="year-row" id="yearMajor"></div><p class="status">최대 3개의 유사 모집단위 키워드를 비교합니다.</p></div>
+      <div><div class="year-row" id="yearMajor"></div><p class="status">대학명과 학과명은 각각 최대 4개까지 입력할 수 있습니다.</p></div>
       <div>
         <div class="field"><div class="sub-label">전형 구분</div><div class="type-row" id="typeMajor"></div></div>
-        <div class="field"><label>계열 구분 <span class="optional">선택사항</span></label><div class="checks" id="majorTracks"></div></div>
-        <div class="field"><label>지역 구분 <span class="optional">선택사항</span></label><select id="majorRegion"><option value="">전체 지역 (목록에서 선택)</option></select></div>
-        <div class="field-group-label">대학명 필터 <span class="optional">선택사항</span></div>
-        <div class="kpi-grid uniform-inputs"><div class="field"><label>대학명 1</label><input id="majorU1" placeholder="예: 성균관대"></div><div class="field"><label>대학명 2</label><input id="majorU2" placeholder="예: 서울시립대"></div><div class="field"><label>대학명 3</label><input id="majorU3" placeholder="예: 건국대"></div></div>
+        <div class="field"><label>계열 구분</label><div class="checks" id="majorTracks"></div></div>
+        <div class="field"><label>지역 구분</label><select id="majorRegion"><option value="">전체 지역 (목록에서 선택)</option></select></div>
+        <div class="field-group-label">대학명 필터</div>
+        <div class="kpi-grid uniform-inputs v93-major-four-grid"><div class="field"><label>대학명 1</label><input id="majorU1" placeholder="예: 성균관대"></div><div class="field"><label>대학명 2</label><input id="majorU2" placeholder="예: 서울시립대"></div><div class="field"><label>대학명 3</label><input id="majorU3" placeholder="예: 건국대"></div><div class="field"><label>대학명 4</label><input id="majorU4" placeholder="예: 동국대"></div></div>
         <div class="checks"><label class="check-pill"><input id="majorExact" type="checkbox">정확히 일치</label><label class="check-pill"><input id="majorExcludeWomen" type="checkbox">여대 제외</label></div>
         <div class="field-group-label">학과명 키워드</div>
-        <div class="kpi-grid uniform-inputs"><div class="field"><label><span class="step">1</span>학과명 입력 1</label><input id="major1" placeholder="예: 융합환경"></div><div class="field"><label><span class="step">2</span>학과명 입력 2 <span class="optional">선택사항</span></label><input id="major2" placeholder="예: 환경공학"></div><div class="field"><label><span class="step">3</span>학과명 입력 3 <span class="optional">선택사항</span></label><input id="major3" placeholder="예: 환경과학"></div></div>
+        <div class="kpi-grid uniform-inputs v93-major-four-grid"><div class="field"><label><span class="step">1</span>학과명 입력 1</label><input id="major1" placeholder="예: 융합환경"></div><div class="field"><label><span class="step">2</span>학과명 입력 2</label><input id="major2" placeholder="예: 환경공학"></div><div class="field"><label><span class="step">3</span>학과명 입력 3</label><input id="major3" placeholder="예: 환경과학"></div><div class="field"><label><span class="step">4</span>학과명 입력 4</label><input id="major4" placeholder="예: 생명환경"></div></div>
         <div class="btn-row"><button id="majorBtn" class="primary">유사 모집단위 비교</button><button id="majorClear" class="secondary">초기화</button></div>
       </div>
     </div>
@@ -3227,12 +3541,12 @@ body #quickHome .quick-action:focus-visible{
     <aside class="panel">
       <h2 class="section-title">조회 조건</h2><div class="year-row" id="yearRegion"></div>
       <div class="field"><label><span class="step">1</span>지역 선택 1</label><select id="region1"><option value="">전체 지역 (목록에서 선택)</option></select></div>
-      <div class="field"><label><span class="step">2</span>지역 선택 2 <span class="optional">선택사항</span></label><select id="region2"><option value="">비교 지역 없음 (목록에서 선택)</option></select></div>
+      <div class="field"><label><span class="step">2</span>지역 선택 2</label><select id="region2"><option value="">비교 지역 없음 (목록에서 선택)</option></select></div>
       <div class="field"><label>등급대</label><select id="regionBand"><option value="">전체 등급대</option><option>1등급대</option><option>2등급대</option><option>3등급대</option><option>4등급대</option><option>5등급대</option><option>6등급대 이상</option><option>등급 미공개</option></select></div>
       <div class="field"><div class="sub-label">전형 구분</div><div class="type-row" id="typeRegion"></div></div>
-      <div class="field"><label>계열 구분 <span class="optional">선택사항</span></label><div class="checks" id="regionTracks"></div></div>
-      <div class="field"><label>세부 계열 <span class="optional">선택사항</span></label><select id="regionField"><option value="">전체 세부 계열 (목록에서 선택)</option></select></div>
-      <div class="field"><label>학과명 입력 <span class="optional">선택사항</span></label><input id="regionDept" placeholder="예: 간호, 컴퓨터, 경영"></div>
+      <div class="field"><label>계열 구분</label><div class="checks" id="regionTracks"></div></div>
+      <div class="field"><label>세부 계열</label><select id="regionField"><option value="">전체 세부 계열 (목록에서 선택)</option></select></div>
+      <div class="field"><label>학과명 입력</label><input id="regionDept" placeholder="예: 간호, 컴퓨터, 경영"></div>
       <div class="checks"><label class="check-pill"><input id="regionExact" type="checkbox">정확히 일치</label><label class="check-pill"><input id="regionExcludeRegional" type="checkbox">지역인재 제외</label><label class="check-pill"><input id="regionExcludeWomen" type="checkbox">여대 제외</label></div>
       <div class="btn-row"><button id="regionBtn" class="primary">조회</button><button id="regionClear" class="secondary">초기화</button></div>
     </aside>
@@ -3246,13 +3560,13 @@ body #quickHome .quick-action:focus-visible{
     <aside id="recommendFilterArea" class="aside-stack">
       <div class="panel">
         <h2 class="section-title">추천 조건</h2>
-        <div class="guide">전 교과 등급과 조건을 입력한 뒤 <span class="hl">추천 보기</span>를 누르세요.</div>
+        
         <div class="field"><label><span class="step">1</span>전 교과 등급</label><input id="recGrade" type="number" min="1" max="9" step="0.01" inputmode="decimal" placeholder="예: 2.75"></div>
         <div class="field"><div class="sub-label"><span class="step">2</span>추천 전형</div><div class="type-row" id="typeRecommend"></div></div>
-        <div class="field"><label><span class="step">3</span>지역 구분 <span class="optional">선택사항</span></label><select id="recRegion"><option value="">전체 지역 (목록에서 선택)</option></select></div>
-        <div class="field"><label><span class="step">4</span>계열 구분 <span class="optional">선택사항</span></label><div class="checks" id="recTrackChecks"></div></div>
-        <div class="field"><label><span class="step">5</span>세부 계열 <span class="optional">선택사항</span></label><select id="recField"><option value="">전체 세부 계열 (목록에서 선택)</option></select></div>
-        <div class="field"><label><span class="step">6</span>학과명 입력 <span class="optional">선택사항</span></label><input id="recDept" placeholder="예: 간호, 미디어, 컴퓨터"></div>
+        <div class="field"><label><span class="step">3</span>지역 구분</label><select id="recRegion"><option value="">전체 지역 (목록에서 선택)</option></select></div>
+        <div class="field"><label><span class="step">4</span>계열 구분</label><div class="checks" id="recTrackChecks"></div></div>
+        <div class="field"><label><span class="step">5</span>세부 계열</label><select id="recField"><option value="">전체 세부 계열 (목록에서 선택)</option></select></div>
+        <div class="field"><label><span class="step">6</span>학과명 입력</label><input id="recDept" placeholder="예: 간호, 미디어, 컴퓨터"></div>
         <div class="checks"><label class="check-pill"><input id="recExcludeRegional" type="checkbox">지역인재 제외</label><label class="check-pill"><input id="recExcludeWomen" type="checkbox">여대 제외</label><label class="check-pill"><input id="recExact" type="checkbox">정확히 일치</label></div>
         <div class="btn-row"><button id="recommendBtn" class="primary">추천 보기</button><button id="recClear" class="secondary">초기화</button></div>
       </div>
@@ -3281,17 +3595,17 @@ body #quickHome .quick-action:focus-visible{
     <aside id="schoolFilterPanel" class="panel">
       <h2 class="section-title">검색 조건</h2><div class="guide">조건을 입력한 뒤 <span class="hl">본교 입결 검색</span>을 누르세요.</div>
       <div class="field"><div class="sub-label">재학 연도</div><div class="year-row" id="schoolYears"></div></div>
-      <div class="field"><label>대학군 및 권역 <span class="optional">선택사항</span></label><select id="schoolGroup"></select></div>
-      <div class="field"><label>대학명 입력 <span class="optional">선택사항</span></label><input id="schoolUniv" placeholder="예: 고려대, 가천대"></div>
+      <div class="field"><label>대학군 및 권역</label><select id="schoolGroup"></select></div>
+      <div class="field"><label>대학명 입력</label><input id="schoolUniv" placeholder="예: 고려대, 가천대"></div>
       <div class="field"><div class="sub-label">전형 유형</div><div class="type-row" id="schoolTypes"></div></div>
-      <div class="field"><label>전형명 <span class="optional">선택사항</span></label><select id="schoolAdmission"></select></div>
-      <div class="field"><label>계열 구분 <span class="optional">선택사항</span></label><div class="checks" id="schoolTracks"></div></div>
-      <div class="field"><label>모집단위 입력 <span class="optional">선택사항</span></label><input id="schoolDept" placeholder="예: 간호, 컴퓨터, 경영"></div>
+      <div class="field"><label>전형명</label><select id="schoolAdmission"></select></div>
+      <div class="field"><label>계열 구분</label><div class="checks" id="schoolTracks"></div></div>
+      <div class="field"><label>모집단위 입력</label><input id="schoolDept" placeholder="예: 간호, 컴퓨터, 경영"></div>
       <div class="field"><label>최종 결과</label><select id="schoolFinal"><option value="">전체 최종 결과</option><option>합격</option><option>불합격</option><option value="미기재">미기재</option></select></div>
       <div class="field"><label>1단계 결과</label><select id="schoolStage1"><option value="">전체 1단계 결과</option><option>합격</option><option>불합격</option><option value="미기재">미기재</option></select></div>
       <div class="field"><label>수능 최저 및 미응시</label><select id="schoolMinStatus"><option value="">전체</option><option value="최저미충족">최저미충족</option><option value="미응시">미응시</option><option value="미기재">미기재 또는 해당 없음</option></select></div>
       <div class="field"><label>성적 기준</label><select id="schoolMetric"></select></div>
-      <div class="kpi-grid"><div class="field"><label>등급 범위 시작 <span class="optional">선택사항</span></label><input id="schoolMin" type="number" step="0.01" placeholder="예: 2.00"></div><div class="field"><label>등급 범위 끝 <span class="optional">선택사항</span></label><input id="schoolMax" type="number" step="0.01" placeholder="예: 3.00"></div></div>
+      <div class="kpi-grid"><div class="field"><label>등급 범위 시작</label><input id="schoolMin" type="number" step="0.01" placeholder="예: 2.00"></div><div class="field"><label>등급 범위 끝</label><input id="schoolMax" type="number" step="0.01" placeholder="예: 3.00"></div></div>
       <div class="checks"><label class="check-pill"><input id="schoolExact" type="checkbox">정확히 일치</label><label class="check-pill"><input id="schoolExcludeMissing" type="checkbox">최종 결과 미기재 제외</label></div>
       <div class="btn-row"><button id="schoolBtn" class="primary">본교 입결 검색</button><button id="schoolClear" class="secondary">초기화</button></div>
     </aside>
@@ -3398,7 +3712,7 @@ function resultTable(items,scope,withQuery=false){return `<div class="table-wrap
 const MAJOR_SYNONYMS=[['컴퓨터','소프트웨어','인공지능','ai','데이터','정보보안'],['미디어','언론','커뮤니케이션','광고홍보','콘텐츠','영상'],['생명','바이오','의생명'],['전기전자','전자','반도체'],['기계','로봇','자동차'],['경영','경제','회계','금융'],['심리','상담'],['건축','도시'],['화학','화공'],['간호']];
 function majorBase(s){return norm(s).replace(/학과|학부|전공|계열|과$/g,'')}
 function majorMatch(dept,q,exact){const d=majorBase(dept),n=majorBase(q);if(!n)return false;if(exact)return d===n;if(d.includes(n))return true;if(n.includes(d)&&d.length>=3&&d.length/Math.max(n.length,1)>=.65)return true;const group=MAJOR_SYNONYMS.find(g=>g.some(x=>n.includes(norm(x))||norm(x).includes(n)));if(group&&group.some(x=>{const a=norm(x);return a.length>=2&&d.includes(a)}))return true;let best=0;for(let i=0;i<n.length;i++)for(let j=i+1;j<=n.length;j++){const p=n.slice(i,j);if(p.length>best&&d.includes(p))best=p.length}const need=Math.min(3,Math.max(2,n.length));return best>=need&&best/Math.max(1,Math.min(d.length,n.length))>=.6}
-function runMajor(){state.ran.major=true;state.limits.major=20;const years=state.years.major,types=state.types.major,tracks=state.tracks.major,region=$('majorRegion').value,exact=$('majorExact').checked,excludeWomen=$('majorExcludeWomen').checked,queries=[$('major1').value,$('major2').value,$('major3').value].map(x=>x.trim()).filter(Boolean),universities=[$('majorU1').value,$('majorU2').value,$('majorU3').value].map(x=>x.trim()).filter(Boolean),universityOnly=!queries.length&&universities.length>0,groups=universityOnly?universities:queries;state.majorMode=universityOnly?'university':'major';state.majorGroups=groups;const rows=[];if(groups.length)for(const r of universityRowsMany(universities,exact)){if(!recordFilterCommon(r,years,types,tracks,{region,exact,excludeWomen}))continue;if(universities.length&&!universities.some(u=>matchUniv(r,u,exact)))continue;const q=universityOnly?universities.find(u=>matchUniv(r,u,exact)):queries.find(q=>majorMatch(r.dept,q,exact));if(q)rows.push({r,q})}const byq=new Map();for(const {r,q} of rows){if(!byq.has(q))byq.set(q,[]);byq.get(q).push(r)}state.majorItems=[];for(const [q,rs] of byq)state.majorItems.push(...buildYearItems(rs,years,{query:q}));renderMajor(groups)}
+function runMajor(){state.ran.major=true;state.limits.major=20;const years=state.years.major,types=state.types.major,tracks=state.tracks.major,region=$('majorRegion').value,exact=$('majorExact').checked,excludeWomen=$('majorExcludeWomen').checked,queries=[$('major1').value,$('major2').value,$('major3').value,$('major4').value].map(x=>x.trim()).filter(Boolean),universities=[$('majorU1').value,$('majorU2').value,$('majorU3').value,$('majorU4').value].map(x=>x.trim()).filter(Boolean),universityOnly=!queries.length&&universities.length>0,groups=universityOnly?universities:queries;state.majorMode=universityOnly?'university':'major';state.majorGroups=groups;const rows=[];if(groups.length)for(const r of universityRowsMany(universities,exact)){if(!recordFilterCommon(r,years,types,tracks,{region,exact,excludeWomen}))continue;if(universities.length&&!universities.some(u=>matchUniv(r,u,exact)))continue;const q=universityOnly?universities.find(u=>matchUniv(r,u,exact)):queries.find(q=>majorMatch(r.dept,q,exact));if(q)rows.push({r,q})}const byq=new Map();for(const {r,q} of rows){if(!byq.has(q))byq.set(q,[]);byq.get(q).push(r)}state.majorItems=[];for(const [q,rs] of byq)state.majorItems.push(...buildYearItems(rs,years,{query:q}));renderMajor(groups)}
 function renderMajor(groups){groups=groups||state.majorGroups||[];const universityOnly=state.majorMode==='university',items=sorted(state.majorItems,'major'),show=items.slice(0,state.limits.major);$('majorCount').textContent=universityOnly?'대학 전체 평균':'전공 키워드 평균';$('majorMore').style.display=show.length<items.length?'inline-flex':'none';renderSortBar('majorSort','major');const cards=groups.map(q=>{const rs=items.filter(x=>x.query===q),s=groupStats(rs.map(x=>({g50:x.g50,g70:x.g70,comp:x.comp,fill:x.fill}))),units=new Set(rs.map(x=>x.univ+'|'+x.dept)).size,universities=new Set(rs.map(x=>x.univ)).size,kicker=universityOnly?'대학 전체 평균':'전공 키워드 평균';return `<div class="compare-card simple"><h3><span class="summary-kicker">${kicker}</span>${esc(q)}</h3><div class="simple-main">50% ${grade2(s.g50)}</div><div class="simple-sub">70% ${grade2(s.g70)} · 모집단위 ${units}개 · 대학 ${universities}개</div></div>`}).join('');$('majorSummary').innerHTML=cards?`<div class="summary-cards compare-simple">${cards}</div>`:'<div class="empty">대학명 또는 학과명 키워드를 입력하세요.</div>';if(MOBILE)$('majorResults').innerHTML=show.length?`<div class="cards">${show.map((x,i)=>`<article class="result-card"><div class="card-title">${universityOnly?'':esc(x.query)+': '}${esc(x.univ)} · ${esc(x.dept)}</div><div class="card-sub">${x.year} / ${esc(x.type)} · ${esc(x.admission)}</div><div class="metric-grid"><div class="metric"><div class="k">경쟁률</div><div class="v">${ratio(x.comp)}</div></div><div class="metric blue"><div class="k">50%</div><div class="v">${grade(x.g50)}</div></div><div class="metric blue"><div class="k">70%</div><div class="v">${grade(x.g70)}</div></div><div class="metric"><div class="k">계열</div><div class="v">${esc(x.track)}</div></div></div><button type="button" class="secondary major-score-toggle" data-major-score-toggle aria-expanded="false" aria-controls="major-mobile-score-${i}">교과 점수 펼치기</button><div id="major-mobile-score-${i}" class="major-score-detail" hidden>${x.type==='교과'?subjectScoreStrip(x):'<div class="major-score-empty">교과 점수 없음</div>'}</div></article>`).join('')}</div>`:'<div class="empty">결과가 없습니다.</div>';else $('majorResults').innerHTML=show.length?majorResultTable(show):'<div class="empty">결과가 없습니다.</div>';const years=[...state.years.major].sort(),colors=['#37c7f5','#ff9148','#9a7cff'];$('majorCharts').innerHTML=groups.length?`<div class="chart-box"><div class="chart-title">${universityOnly?'대학별 전체':'키워드별'} 연도 평균 50%컷</div>${lineChart(years,groups.map((q,i)=>({name:q,values:years.map(y=>mean(items.filter(x=>x.query===q&&x.year===y).map(x=>x.g50),true)),color:colors[i%colors.length]})),true)}</div>`:'<div class="empty">대학명 또는 학과명 키워드를 입력하세요.</div>'}
 function majorResultTable(items){return `<div class="table-wrap"><table class="result-table major-result-table"><thead><tr>${th('major','query','기준 키워드')}${th('major','year','선택 연도')}${th('major','univ','대학')}${th('major','type','전형')}${th('major','dept','학과')}${th('major','track','계열')}${th('major','comp','경쟁률')}${th('major','g50','50%','metric-blue')}${th('major','g70','70%','metric-blue')}<th class="major-score-toggle-col">교과 점수</th></tr></thead><tbody>${items.map((x,i)=>`<tr class="major-data-row"><td>${esc(x.query)}</td><td>${x.year}</td><td>${esc(x.univ)}</td><td><span class="badge">${esc(x.type)}</span> ${esc(x.admission)}</td><td>${esc(x.dept)}</td><td>${esc(x.track)}</td><td>${ratio(x.comp)}</td><td class="metric-blue metric-strong">${grade(x.g50)}</td><td class="metric-blue">${grade(x.g70)}</td><td class="major-score-toggle-col"><button type="button" class="secondary major-score-toggle" data-major-score-toggle aria-expanded="false" aria-controls="major-score-row-${i}">펼치기</button></td></tr><tr id="major-score-row-${i}" class="major-score-detail-row" hidden><td colspan="10">${x.type==='교과'?subjectScoreStrip(x):'<div class="major-score-empty">교과 점수 없음</div>'}</td></tr>`).join('')}</tbody></table></div>`}
 const REC_CRIT={avg3:{label:'최근 3년 평균 등급50',years:[2024,2025,2026]},y2024:{label:'2024 단년 평균 등급50',years:[2024]},y2025:{label:'2025 단년 평균 등급50',years:[2025]},y2026:{label:'2026 단년 평균 등급50',years:[2026]}};
@@ -3443,10 +3757,10 @@ function initSchoolAccess(){const dialog=$('schoolAuthDialog');$('schoolAuthForm
 function setTab(btn){$$('.tab').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected',String(b===btn))});btn.classList.add('active');$$('.tab-panel').forEach(p=>p.classList.remove('active'));const tab=btn.dataset.tab;state.tab=tab;$('panel-'+tab).classList.add('active');if(tab==='school'){setSchoolMode(btn.dataset.schoolMode||'9');updateSchoolAdmissions()}const notices={help:'사용방법과 예시에서 전체 흐름을 확인하세요.',search:'연도와 검색 조건을 입력한 뒤 검색 버튼을 누르세요.',compare:'최대 3개 대학을 입력해 연도별 입결을 비교하세요.',major:'유사한 모집단위 키워드 최대 3개를 비교하세요.',region:'지역 1과 2를 선택해 평균과 분포를 비교하세요.',recommend:'전 교과 등급과 추천 조건을 입력한 뒤 추천 보기를 누르세요.',school:'재학 연도·대학·전형·성적 조건을 지정한 뒤 검색하세요.'};$('tabNoticeText').textContent=notices[tab]||''}
 function setMode(mode){state.mode=mode;$$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('keywordBox').style.display=mode==='keyword'?'block':'none';$('selectBox').style.display=mode==='select'?'block':'none'}
 function clearSearch(){['qUniv','qDept','sUniv'].forEach(id=>$(id).value='');['qRegion','qAdmission','qField','sType','sAdmission','sDept'].forEach(id=>$(id).value='');['qExcludeRegional','qExcludeWomen','qExact'].forEach(id=>$(id).checked=false);state.tracks.search.clear();state.types.search=new Set(TYPES);state.searchCompare.clear();state.activeSearchKey=null;state.searchRunToken=(state.searchRunToken||0)+1;clearTimeout(state.searchTimer);renderTracks('qTracks','search');renderTypeButtons('typeSearch','search');state.ran.search=false;$('searchResults').innerHTML='<div class="empty">조건을 입력한 뒤 검색 버튼을 누르세요.</div>';$('searchCompare').innerHTML='<div class="empty">검색 후 연도별 평균 비교가 표시되고, 비교 체크박스를 선택하면 모집단위 추이가 표시됩니다.</div>';$('searchDetail').innerHTML='<div class="empty">결과 행을 누르면 해당 모집단위의 연도별 상세 데이터와 그래프가 표시됩니다.</div>';$('searchSummaryPanel').style.display='none'}
-function bind(){document.addEventListener('click',e=>{const tab=e.target.closest('.tab');if(tab){if(tab.classList.contains('school-tab')&&!state.schoolUnlocked){e.preventDefault();requestSchoolAccess(tab);return}setTab(tab);return}const y=e.target.closest('[data-year-scope]');if(y){toggleYear(y.dataset.yearScope,y.dataset.year);return}const t=e.target.closest('[data-type-scope]');if(t){toggleType(t.dataset.typeScope,t.dataset.type);return}const m=e.target.closest('[data-mode]');if(m){setMode(m.dataset.mode);return}const rc=e.target.closest('[data-rec-criterion]');if(rc){state.recCriterion=rc.dataset.recCriterion;renderRecommendationControls();markRecDirty();return}const rj=e.target.closest('[data-rec-judge]');if(rj){const j=rj.dataset.recJudge;state.recJudges=new Set([j]);state.limits.recommend=10;renderRecommendationControls();if(state.ran.recommend)renderRecommend();return}const thd=e.target.closest('[data-th-sort]');if(thd){const sc=thd.dataset.thSort,k=thd.dataset.key;if(sc==='school'){const s=state.sort.school;if(s.headerKey===k)s.headerDir*=-1;else{s.headerKey=k;s.headerDir=1}}else if(state.sort[sc].key===k)state.sort[sc].dir*=-1;else state.sort[sc]={key:k,dir:1};if(sc==='search')renderSearchView();if(sc==='compare')renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean));if(sc==='major')renderMajor([$('major1').value,$('major2').value,$('major3').value].filter(Boolean));if(sc==='recommend')renderRecommend();if(sc==='region')renderRegion([$('region1').value,$('region2').value].filter(Boolean));if(sc==='school')renderSchool();return}const sy=e.target.closest('[data-school-year]');if(sy){const v=sy.dataset.schoolYear;if(v==='all'){state.schoolYears=new Set([2019,2020,2021,2022,2023,2024,2025])}else if(v==='recent'){state.schoolYears=new Set([2023,2024,2025])}else{const n=+v;if(state.schoolYears.has(n)&&state.schoolYears.size>1)state.schoolYears.delete(n);else state.schoolYears.add(n)}$$('[data-school-year]').forEach(b=>b.classList.toggle('active',state.schoolYears.has(+b.dataset.schoolYear)||(b.dataset.schoolYear==='all'&&state.schoolYears.size===7)||(b.dataset.schoolYear==='recent'&&state.schoolYears.size===3&&[2023,2024,2025].every(x=>state.schoolYears.has(x)))));return}const st=e.target.closest('[data-school-type]');if(st){const v=st.dataset.schoolType;if(v==='all'){state.schoolTypes=new Set(SCHOOL_RAW.dicts.types)}else{if(state.schoolTypes.size===SCHOOL_RAW.dicts.types.length)state.schoolTypes.clear();state.schoolTypes.has(v)?state.schoolTypes.delete(v):state.schoolTypes.add(v);if(!state.schoolTypes.size)state.schoolTypes=new Set(SCHOOL_RAW.dicts.types)}$$('[data-school-type]').forEach(b=>b.classList.toggle('active',b.dataset.schoolType==='all'?state.schoolTypes.size===SCHOOL_RAW.dicts.types.length:state.schoolTypes.has(b.dataset.schoolType)&&state.schoolTypes.size<SCHOOL_RAW.dicts.types.length));updateSchoolAdmissions();return}const rec=e.target.closest('[data-recommend-key]');if(rec){showRecommendDetail(rec.dataset.recommendKey);return}const sr=e.target.closest('[data-search-key]');if(sr&&!e.target.closest('.card-compare,input,button,a,select'))showSearchDetail(sr.dataset.searchKey);const sch=e.target.closest('[data-school-id]');if(sch)showSchoolDetail(sch.dataset.schoolId)});
-document.addEventListener('change',e=>{if(e.target.matches('[data-track-scope]')){const scope=e.target.dataset.trackScope,s=state.tracks[scope];e.target.checked?s.add(e.target.value):s.delete(e.target.value);if(scope==='recommend')markRecDirty();else if(!MOBILE&&state.ran[scope])scheduleRun(scope)}if(e.target.classList.contains('search-cmp')){const k=e.target.dataset.key;if(e.target.checked){if(state.searchCompare.size>=3){e.target.checked=false;alert('비교는 최대 3개까지 선택할 수 있습니다.');return}state.searchCompare.add(k)}else state.searchCompare.delete(k);$$('.search-cmp').forEach(cb=>{if(cb.dataset.key===k)cb.checked=state.searchCompare.has(k)});renderSearchCompare()}if(e.target.matches('[data-sort-select]')){const sc=e.target.dataset.sortSelect;state.sort[sc].key=e.target.value;if(sc==='school'){state.sort[sc].headerKey=null;state.sort[sc].headerDir=1;if(e.target.value==='finalFail'||e.target.value==='finalPass')state.sort[sc].dir=1}if(sc==='search')renderSearchView();if(sc==='compare')renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean));if(sc==='major')renderMajor([$('major1').value,$('major2').value,$('major3').value].filter(Boolean));if(sc==='recommend')renderRecommend();if(sc==='region')renderRegion([$('region1').value,$('region2').value].filter(Boolean));if(sc==='school')renderSchool()}if(e.target.matches('[data-school-track]')){e.target.checked?state.schoolTracks.add(e.target.dataset.schoolTrack):state.schoolTracks.delete(e.target.dataset.schoolTrack)}});
-document.addEventListener('click',e=>{const b=e.target.closest('[data-sort-dir]');if(b){const sc=b.dataset.sortDir;state.sort[sc].dir*=-1;if(sc==='search')renderSearchView();if(sc==='compare')renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean));if(sc==='major')renderMajor([$('major1').value,$('major2').value,$('major3').value].filter(Boolean));if(sc==='recommend')renderRecommend();if(sc==='region')renderRegion([$('region1').value,$('region2').value].filter(Boolean));if(sc==='school')renderSchool()}});
-$('searchBtn').onclick=renderSearch;$('selectSearchBtn').onclick=renderSearch;$('searchClear').onclick=clearSearch;$('selectClear').onclick=clearSearch;$('searchMore').onclick=()=>{state.limits.search+=20;renderSearchView()};$('compareBtn').onclick=runCompare;$('compareClear').onclick=()=>{['cmpDept','cmpU1','cmpU2','cmpU3'].forEach(id=>$(id).value='');state.ran.compare=false;$('compareResults').innerHTML='<div class="empty">비교 조건을 입력하세요.</div>'};$('compareMore').onclick=()=>{state.limits.compare+=20;renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean))};$('majorBtn').onclick=runMajor;$('majorClear').onclick=()=>{['majorU1','majorU2','majorU3','major1','major2','major3'].forEach(id=>$(id).value='');state.ran.major=false;$('majorResults').innerHTML='<div class="empty">비교 조건을 입력하세요.</div>'};$('majorMore').onclick=()=>{state.limits.major+=20;renderMajor([$('major1').value,$('major2').value,$('major3').value].filter(Boolean))};$('recommendBtn').onclick=runRecommendation;$('recClear').onclick=clearRecommendation;$('recMore').onclick=()=>{const items=recommendationVisible();state.limits.recommend=state.limits.recommend>10?10:Math.max(10,items.length);renderRecommend()};$('regionBtn').onclick=runRegion;$('regionClear').onclick=()=>{['region1','region2','regionBand','regionField'].forEach(id=>$(id).value='');$('regionDept').value='';state.ran.region=false;$('regionResults').innerHTML='<div class="empty">지역을 선택하세요.</div>'};$('schoolBtn').onclick=runSchool;$('schoolClear').onclick=()=>{['schoolUniv','schoolDept','schoolMin','schoolMax'].forEach(id=>$(id).value='');['schoolGroup','schoolAdmission','schoolFinal','schoolStage1','schoolMinStatus'].forEach(id=>$(id).value='');state.ran.school=false;$('schoolResults').innerHTML='<div class="school-empty">조건을 입력하세요.</div>'};$('schoolMore').onclick=()=>{state.limits.school+=20;renderSchool()};$('qUniv').addEventListener('input',()=>{const value=$('qUniv').value.trim();if(!value||value.length>=2)scheduleOptionUpdate('keyword');if(!MOBILE&&state.ran.search)scheduleRun('search')});$('qAdmission').addEventListener('focus',updateAdmissionOptions);$('sUniv').addEventListener('input',()=>{const value=$('sUniv').value.trim();if(!value||value.length>=2)scheduleOptionUpdate('select');if(!MOBILE&&state.ran.search)scheduleRun('search')});$('sType').addEventListener('focus',updateSelectModeOptions);['sType','sAdmission'].forEach(id=>$(id).addEventListener('change',updateSelectModeOptions));['recGrade','recDept'].forEach(id=>$(id).addEventListener('input',markRecDirty));['recRegion','recField','recExact','recExcludeRegional','recExcludeWomen'].forEach(id=>$(id).addEventListener('change',markRecDirty));$('schoolUniv').addEventListener('input',()=>{if($('schoolUniv').value.trim().length>=2||!$('schoolUniv').value)updateSchoolAdmissions()});$('searchCsv').onclick=()=>downloadCsv('입결검색.csv',['대학','연도','전형','전형명','학과','계열','선택기간50','선택기간70','연도50','연도70','교과50','교과70','교과만점','경쟁률','충원률'],state.searchItems.map(x=>[x.univ,x.year,x.type,x.admission,x.dept,x.track,x.avg50,x.avg70,x.g50,x.g70,x.c50,x.c70,x.fullScore,x.comp,isNum(x.fill)?x.fill*100:null]));$('compareCsv').onclick=()=>downloadCsv('대학간비교.csv',['연도','대학','전형','전형명','학과','계열','50','70','교과50','교과70','교과만점','경쟁률'],state.compareItems.map(x=>[x.year,x.univ,x.type,x.admission,x.dept,x.track,x.g50,x.g70,x.c50,x.c70,x.fullScore,x.comp]));$('majorCsv').onclick=()=>downloadCsv('유사모집단위비교.csv',['기준키워드','연도','대학','전형','전형명','학과','계열','50','70','교과50','교과70','교과만점','경쟁률'],state.majorItems.map(x=>[x.query,x.year,x.univ,x.type,x.admission,x.dept,x.track,x.g50,x.g70,x.c50,x.c70,x.fullScore,x.comp]));$('recCsv').onclick=()=>downloadCsv('등급추천.csv',['판정','대학','전형','전형명','학과','계열','기준50','차이','70'],recommendationVisible().map(x=>[x.judge,x.univ,x.type,x.admission,x.dept,x.track,x.base,x.diff,x.g70]));$('schoolCsv').onclick=()=>downloadCsv(`본교입시결과_${state.schoolMode}등급.csv`,['연도','대학','전형유형','전형명','모집단위','계열','선택성적','1단계','최종','수능최저'],state.schoolItems.map(x=>[x.year,x.university,x.type,x.admission,x.department,x.track,x.score,x.stage1,x.final,x.minStatus]));}
+function bind(){document.addEventListener('click',e=>{const tab=e.target.closest('.tab');if(tab){if(tab.classList.contains('school-tab')&&!state.schoolUnlocked){e.preventDefault();requestSchoolAccess(tab);return}setTab(tab);return}const y=e.target.closest('[data-year-scope]');if(y){toggleYear(y.dataset.yearScope,y.dataset.year);return}const t=e.target.closest('[data-type-scope]');if(t){toggleType(t.dataset.typeScope,t.dataset.type);return}const m=e.target.closest('[data-mode]');if(m){setMode(m.dataset.mode);return}const rc=e.target.closest('[data-rec-criterion]');if(rc){state.recCriterion=rc.dataset.recCriterion;renderRecommendationControls();markRecDirty();return}const rj=e.target.closest('[data-rec-judge]');if(rj){const j=rj.dataset.recJudge;state.recJudges=new Set([j]);state.limits.recommend=10;renderRecommendationControls();if(state.ran.recommend)renderRecommend();return}const thd=e.target.closest('[data-th-sort]');if(thd){const sc=thd.dataset.thSort,k=thd.dataset.key;if(sc==='school'){const s=state.sort.school;if(s.headerKey===k)s.headerDir*=-1;else{s.headerKey=k;s.headerDir=1}}else if(state.sort[sc].key===k)state.sort[sc].dir*=-1;else state.sort[sc]={key:k,dir:1};if(sc==='search')renderSearchView();if(sc==='compare')renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean));if(sc==='major')renderMajor([$('major1').value,$('major2').value,$('major3').value,$('major4').value].filter(Boolean));if(sc==='recommend')renderRecommend();if(sc==='region')renderRegion([$('region1').value,$('region2').value].filter(Boolean));if(sc==='school')renderSchool();return}const sy=e.target.closest('[data-school-year]');if(sy){const v=sy.dataset.schoolYear;if(v==='all'){state.schoolYears=new Set([2019,2020,2021,2022,2023,2024,2025])}else if(v==='recent'){state.schoolYears=new Set([2023,2024,2025])}else{const n=+v;if(state.schoolYears.has(n)&&state.schoolYears.size>1)state.schoolYears.delete(n);else state.schoolYears.add(n)}$$('[data-school-year]').forEach(b=>b.classList.toggle('active',state.schoolYears.has(+b.dataset.schoolYear)||(b.dataset.schoolYear==='all'&&state.schoolYears.size===7)||(b.dataset.schoolYear==='recent'&&state.schoolYears.size===3&&[2023,2024,2025].every(x=>state.schoolYears.has(x)))));return}const st=e.target.closest('[data-school-type]');if(st){const v=st.dataset.schoolType;if(v==='all'){state.schoolTypes=new Set(SCHOOL_RAW.dicts.types)}else{if(state.schoolTypes.size===SCHOOL_RAW.dicts.types.length)state.schoolTypes.clear();state.schoolTypes.has(v)?state.schoolTypes.delete(v):state.schoolTypes.add(v);if(!state.schoolTypes.size)state.schoolTypes=new Set(SCHOOL_RAW.dicts.types)}$$('[data-school-type]').forEach(b=>b.classList.toggle('active',b.dataset.schoolType==='all'?state.schoolTypes.size===SCHOOL_RAW.dicts.types.length:state.schoolTypes.has(b.dataset.schoolType)&&state.schoolTypes.size<SCHOOL_RAW.dicts.types.length));updateSchoolAdmissions();return}const rec=e.target.closest('[data-recommend-key]');if(rec){showRecommendDetail(rec.dataset.recommendKey);return}const sr=e.target.closest('[data-search-key]');if(sr&&!e.target.closest('.card-compare,input,button,a,select'))showSearchDetail(sr.dataset.searchKey);const sch=e.target.closest('[data-school-id]');if(sch)showSchoolDetail(sch.dataset.schoolId)});
+document.addEventListener('change',e=>{if(e.target.matches('[data-track-scope]')){const scope=e.target.dataset.trackScope,s=state.tracks[scope];e.target.checked?s.add(e.target.value):s.delete(e.target.value);if(scope==='recommend')markRecDirty();else if(!MOBILE&&state.ran[scope])scheduleRun(scope)}if(e.target.classList.contains('search-cmp')){const k=e.target.dataset.key;if(e.target.checked){if(state.searchCompare.size>=3){e.target.checked=false;alert('비교는 최대 3개까지 선택할 수 있습니다.');return}state.searchCompare.add(k)}else state.searchCompare.delete(k);$$('.search-cmp').forEach(cb=>{if(cb.dataset.key===k)cb.checked=state.searchCompare.has(k)});renderSearchCompare()}if(e.target.matches('[data-sort-select]')){const sc=e.target.dataset.sortSelect;state.sort[sc].key=e.target.value;if(sc==='school'){state.sort[sc].headerKey=null;state.sort[sc].headerDir=1;if(e.target.value==='finalFail'||e.target.value==='finalPass')state.sort[sc].dir=1}if(sc==='search')renderSearchView();if(sc==='compare')renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean));if(sc==='major')renderMajor([$('major1').value,$('major2').value,$('major3').value,$('major4').value].filter(Boolean));if(sc==='recommend')renderRecommend();if(sc==='region')renderRegion([$('region1').value,$('region2').value].filter(Boolean));if(sc==='school')renderSchool()}if(e.target.matches('[data-school-track]')){e.target.checked?state.schoolTracks.add(e.target.dataset.schoolTrack):state.schoolTracks.delete(e.target.dataset.schoolTrack)}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-sort-dir]');if(b){const sc=b.dataset.sortDir;state.sort[sc].dir*=-1;if(sc==='search')renderSearchView();if(sc==='compare')renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean));if(sc==='major')renderMajor([$('major1').value,$('major2').value,$('major3').value,$('major4').value].filter(Boolean));if(sc==='recommend')renderRecommend();if(sc==='region')renderRegion([$('region1').value,$('region2').value].filter(Boolean));if(sc==='school')renderSchool()}});
+$('searchBtn').onclick=renderSearch;$('selectSearchBtn').onclick=renderSearch;$('searchClear').onclick=clearSearch;$('selectClear').onclick=clearSearch;$('searchMore').onclick=()=>{state.limits.search+=20;renderSearchView()};$('compareBtn').onclick=runCompare;$('compareClear').onclick=()=>{['cmpDept','cmpU1','cmpU2','cmpU3'].forEach(id=>$(id).value='');state.ran.compare=false;$('compareResults').innerHTML='<div class="empty">비교 조건을 입력하세요.</div>'};$('compareMore').onclick=()=>{state.limits.compare+=20;renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean))};$('majorBtn').onclick=runMajor;$('majorClear').onclick=()=>{['majorU1','majorU2','majorU3','majorU4','major1','major2','major3','major4'].forEach(id=>$(id).value='');state.ran.major=false;$('majorResults').innerHTML='<div class="empty">비교 조건을 입력하세요.</div>'};$('majorMore').onclick=()=>{state.limits.major+=20;renderMajor([$('major1').value,$('major2').value,$('major3').value,$('major4').value].filter(Boolean))};$('recommendBtn').onclick=runRecommendation;$('recClear').onclick=clearRecommendation;$('recMore').onclick=()=>{const items=recommendationVisible();state.limits.recommend=state.limits.recommend>10?10:Math.max(10,items.length);renderRecommend()};$('regionBtn').onclick=runRegion;$('regionClear').onclick=()=>{['region1','region2','regionBand','regionField'].forEach(id=>$(id).value='');$('regionDept').value='';state.ran.region=false;$('regionResults').innerHTML='<div class="empty">지역을 선택하세요.</div>'};$('schoolBtn').onclick=runSchool;$('schoolClear').onclick=()=>{['schoolUniv','schoolDept','schoolMin','schoolMax'].forEach(id=>$(id).value='');['schoolGroup','schoolAdmission','schoolFinal','schoolStage1','schoolMinStatus'].forEach(id=>$(id).value='');state.ran.school=false;$('schoolResults').innerHTML='<div class="school-empty">조건을 입력하세요.</div>'};$('schoolMore').onclick=()=>{state.limits.school+=20;renderSchool()};$('qUniv').addEventListener('input',()=>{const value=$('qUniv').value.trim();if(!value||value.length>=2)scheduleOptionUpdate('keyword');if(!MOBILE&&state.ran.search)scheduleRun('search')});$('qAdmission').addEventListener('focus',updateAdmissionOptions);$('sUniv').addEventListener('input',()=>{const value=$('sUniv').value.trim();if(!value||value.length>=2)scheduleOptionUpdate('select');if(!MOBILE&&state.ran.search)scheduleRun('search')});$('sType').addEventListener('focus',updateSelectModeOptions);['sType','sAdmission'].forEach(id=>$(id).addEventListener('change',updateSelectModeOptions));['recGrade','recDept'].forEach(id=>$(id).addEventListener('input',markRecDirty));['recRegion','recField','recExact','recExcludeRegional','recExcludeWomen'].forEach(id=>$(id).addEventListener('change',markRecDirty));$('schoolUniv').addEventListener('input',()=>{if($('schoolUniv').value.trim().length>=2||!$('schoolUniv').value)updateSchoolAdmissions()});$('searchCsv').onclick=()=>downloadCsv('입결검색.csv',['대학','연도','전형','전형명','학과','계열','선택기간50','선택기간70','연도50','연도70','교과50','교과70','교과만점','경쟁률','충원률'],state.searchItems.map(x=>[x.univ,x.year,x.type,x.admission,x.dept,x.track,x.avg50,x.avg70,x.g50,x.g70,x.c50,x.c70,x.fullScore,x.comp,isNum(x.fill)?x.fill*100:null]));$('compareCsv').onclick=()=>downloadCsv('대학간비교.csv',['연도','대학','전형','전형명','학과','계열','50','70','교과50','교과70','교과만점','경쟁률'],state.compareItems.map(x=>[x.year,x.univ,x.type,x.admission,x.dept,x.track,x.g50,x.g70,x.c50,x.c70,x.fullScore,x.comp]));$('majorCsv').onclick=()=>downloadCsv('유사모집단위비교.csv',['기준키워드','연도','대학','전형','전형명','학과','계열','50','70','교과50','교과70','교과만점','경쟁률'],state.majorItems.map(x=>[x.query,x.year,x.univ,x.type,x.admission,x.dept,x.track,x.g50,x.g70,x.c50,x.c70,x.fullScore,x.comp]));$('recCsv').onclick=()=>downloadCsv('등급추천.csv',['판정','대학','전형','전형명','학과','계열','기준50','차이','70'],recommendationVisible().map(x=>[x.judge,x.univ,x.type,x.admission,x.dept,x.track,x.base,x.diff,x.g70]));$('schoolCsv').onclick=()=>downloadCsv(`본교입시결과_${state.schoolMode}등급.csv`,['연도','대학','전형유형','전형명','모집단위','계열','선택성적','1단계','최종','수능최저'],state.schoolItems.map(x=>[x.year,x.university,x.type,x.admission,x.department,x.track,x.score,x.stage1,x.final,x.minStatus]));}
 const FONT_STEPS=[14,15,16,17.5,19],FONT_LABELS=['88%','94%','100%','110%','119%'];
 function applyFontStep(index){const i=Math.max(0,Math.min(FONT_STEPS.length-1,index));state.fontStep=i;document.documentElement.style.setProperty('--ui-font-size',FONT_STEPS[i]+'px');const label=$('fontScaleLabel');if(label)label.textContent=FONT_LABELS[i];try{localStorage.setItem('admissionFontStepPCV3',String(i))}catch(e){}}
 function initFontControls(){let i=1;try{const v=Number(localStorage.getItem('admissionFontStepPCV3'));if(Number.isInteger(v))i=v}catch(e){}applyFontStep(i);document.addEventListener('click',e=>{const step=e.target.closest('[data-font-step]');if(step){applyFontStep((state.fontStep??1)+Number(step.dataset.fontStep));return}const reset=e.target.closest('[data-font-reset]');if(reset)applyFontStep(1)})}
@@ -3454,8 +3768,8 @@ function initChartTooltips(){if(document.getElementById('chartTooltip'))return;c
 function initPageUtilities(){const nav=$('mainTabs'),btn=$('backToTop');const setSticky=()=>document.documentElement.style.setProperty('--sticky-nav-height',`${(nav?.offsetHeight||72)+24}px`);setSticky();if(window.ResizeObserver&&nav)new ResizeObserver(setSticky).observe(nav);window.addEventListener('resize',setSticky,{passive:true});if(!btn)return;const sync=()=>btn.classList.toggle('show',window.scrollY>520);window.addEventListener('scroll',sync,{passive:true});btn.onclick=()=>window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});sync()}
 function initSchoolMissingFilter(){const exclude=$('schoolExcludeMissing'),final=$('schoolFinal');exclude.addEventListener('change',()=>{if(exclude.checked&&final.value==='미기재')final.value='';if(state.ran.school)runSchool()});final.addEventListener('change',()=>{if(final.value==='미기재')exclude.checked=false});$('schoolClear').addEventListener('click',()=>{exclude.checked=false})}
 function initSearchAutoRefresh(){const ids=['qRegion','qAdmission','qField','qDept','qExact','qExcludeWomen','qExcludeRegional','sType','sAdmission','sDept'];ids.forEach(id=>{const el=$(id),event=el.tagName==='INPUT'&&el.type==='text'?'input':'change';el.addEventListener(event,()=>{if(!MOBILE&&state.ran.search)scheduleRun('search')})})}
-function initEnterActions(){if(MOBILE||document.documentElement.dataset.enterBound)return;document.documentElement.dataset.enterBound='1';const actions=new Map([['qUniv',{button:'searchBtn',scope:'search'}],['qDept',{button:'searchBtn',scope:'search'}],['sUniv',{button:'selectSearchBtn',scope:'search'}],['cmpDept',{button:'compareBtn',scope:'compare'}],['cmpU1',{button:'compareBtn',scope:'compare'}],['cmpU2',{button:'compareBtn',scope:'compare'}],['cmpU3',{button:'compareBtn',scope:'compare'}],['majorU1',{button:'majorBtn',scope:'major'}],['majorU2',{button:'majorBtn',scope:'major'}],['majorU3',{button:'majorBtn',scope:'major'}],['major1',{button:'majorBtn',scope:'major'}],['major2',{button:'majorBtn',scope:'major'}],['major3',{button:'majorBtn',scope:'major'}],['recGrade',{button:'recommendBtn',scope:'recommend'}],['recDept',{button:'recommendBtn',scope:'recommend'}],['regionDept',{button:'regionBtn',scope:'region'}],['schoolUniv',{button:'schoolBtn',scope:'school'}],['schoolDept',{button:'schoolBtn',scope:'school'}],['schoolMin',{button:'schoolBtn',scope:'school'}],['schoolMax',{button:'schoolBtn',scope:'school'}]]);document.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.isComposing||e.keyCode===229||e.repeat||e.defaultPrevented||e.ctrlKey||e.altKey||e.metaKey)return;const input=e.target;if(!(input instanceof HTMLInputElement)||!['text','search','number'].includes(input.type)||!input.closest('.tab-panel.active')||input.disabled||input.readOnly)return;const action=actions.get(input.id);if(!action)return;const button=$(action.button);if(!button||button.disabled)return;e.preventDefault();clearTimeout(state['_timer_'+action.scope]);state['_timer_'+action.scope]=null;button.click()})}
-function wrapAdvancedFilters(nodes,title){nodes=[...new Set(nodes.filter(Boolean))].filter(node=>!node.closest('.advanced-filters'));if(!nodes.length)return;const anchor=nodes[0],details=document.createElement('details'),summary=document.createElement('summary'),body=document.createElement('div');details.className='advanced-filters';summary.innerHTML='<span>'+title+'</span><span class="advanced-filter-state">선택사항</span>';body.className='advanced-filter-body';anchor.parentNode.insertBefore(details,anchor);details.append(summary,body);nodes.forEach(node=>body.append(node));const sync=()=>{const inputs=[...details.querySelectorAll('input,select')],buttons=[...details.querySelectorAll('[data-type-scope].active:not([data-type="all"])')],count=inputs.filter(el=>el.type==='checkbox'?el.checked:Boolean(String(el.value||'').trim())).length+buttons.length;details.classList.toggle('has-value',count>0);const label=details.querySelector('.advanced-filter-state');if(label)label.textContent=count?count+'개 적용':'선택사항'};details._syncAdvanced=sync;sync()}
+function initEnterActions(){if(MOBILE||document.documentElement.dataset.enterBound)return;document.documentElement.dataset.enterBound='1';const actions=new Map([['qUniv',{button:'searchBtn',scope:'search'}],['qDept',{button:'searchBtn',scope:'search'}],['sUniv',{button:'selectSearchBtn',scope:'search'}],['cmpDept',{button:'compareBtn',scope:'compare'}],['cmpU1',{button:'compareBtn',scope:'compare'}],['cmpU2',{button:'compareBtn',scope:'compare'}],['cmpU3',{button:'compareBtn',scope:'compare'}],['majorU1',{button:'majorBtn',scope:'major'}],['majorU2',{button:'majorBtn',scope:'major'}],['majorU3',{button:'majorBtn',scope:'major'}],['majorU4',{button:'majorBtn',scope:'major'}],['major1',{button:'majorBtn',scope:'major'}],['major2',{button:'majorBtn',scope:'major'}],['major3',{button:'majorBtn',scope:'major'}],['major4',{button:'majorBtn',scope:'major'}],['recGrade',{button:'recommendBtn',scope:'recommend'}],['recDept',{button:'recommendBtn',scope:'recommend'}],['regionDept',{button:'regionBtn',scope:'region'}],['schoolUniv',{button:'schoolBtn',scope:'school'}],['schoolDept',{button:'schoolBtn',scope:'school'}],['schoolMin',{button:'schoolBtn',scope:'school'}],['schoolMax',{button:'schoolBtn',scope:'school'}]]);document.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.isComposing||e.keyCode===229||e.repeat||e.defaultPrevented||e.ctrlKey||e.altKey||e.metaKey)return;const input=e.target;if(!(input instanceof HTMLInputElement)||!['text','search','number'].includes(input.type)||!input.closest('.tab-panel.active')||input.disabled||input.readOnly)return;const action=actions.get(input.id);if(!action)return;const button=$(action.button);if(!button||button.disabled)return;e.preventDefault();clearTimeout(state['_timer_'+action.scope]);state['_timer_'+action.scope]=null;button.click()})}
+function wrapAdvancedFilters(nodes,title){nodes=[...new Set(nodes.filter(Boolean))].filter(node=>!node.closest('.advanced-filters'));if(!nodes.length)return;const anchor=nodes[0],details=document.createElement('details'),summary=document.createElement('summary'),body=document.createElement('div');details.className='advanced-filters';summary.innerHTML='<span>'+title+'</span><span class="advanced-filter-state"></span>';body.className='advanced-filter-body';anchor.parentNode.insertBefore(details,anchor);details.append(summary,body);nodes.forEach(node=>body.append(node));const sync=()=>{const inputs=[...details.querySelectorAll('input,select')],buttons=[...details.querySelectorAll('[data-type-scope].active:not([data-type="all"])')],count=inputs.filter(el=>el.type==='checkbox'?el.checked:Boolean(String(el.value||'').trim())).length+buttons.length;details.classList.toggle('has-value',count>0);const label=details.querySelector('.advanced-filter-state');if(label)label.textContent=count?count+'개 적용':''};details._syncAdvanced=sync;sync()}
 function initCompactLayout(){const field=id=>$(id)?.closest('.field'),checks=id=>$(id)?.closest('.checks'),group=id=>$(id)?.closest('.kpi-grid');const rails=['#panel-search .aside-stack','#panel-compare>.panel','#panel-major>.panel','#panel-region aside.panel','#panel-recommend .aside-stack','#panel-school aside.panel'];rails.forEach(selector=>document.querySelector(selector)?.classList.add('condition-rail'));wrapAdvancedFilters([field('qRegion'),checks('qExact')],'검색 범위 및 제외 조건');wrapAdvancedFilters([field('qAdmission'),field('qTracks'),field('qField')],'전형 및 계열 세부 필터');wrapAdvancedFilters([field('typeCompare'),field('cmpTracks'),checks('cmpExact')],'비교 세부 필터');wrapAdvancedFilters([field('typeMajor'),field('majorTracks'),field('majorRegion'),checks('majorExact')],'대학 및 계열 세부 필터');wrapAdvancedFilters([field('regionBand'),field('typeRegion'),field('regionTracks'),field('regionField'),field('regionDept'),checks('regionExact')],'등급, 전형, 학과 세부 필터');wrapAdvancedFilters([field('recRegion'),field('recTrackChecks'),field('recField'),field('recDept'),checks('recExact')],'세부 필터(계열 등)');wrapAdvancedFilters([field('schoolGroup'),field('schoolAdmission'),field('schoolTracks'),field('schoolFinal'),field('schoolStage1'),field('schoolMinStatus'),group('schoolMin'),checks('schoolExact')],'본교 결과 세부 필터');const sync=e=>{const details=e.target.closest?.('.advanced-filters');if(details?._syncAdvanced)queueMicrotask(()=>details._syncAdvanced())};document.addEventListener('input',sync,{passive:true});document.addEventListener('change',sync);document.addEventListener('click',sync)}
 
 
@@ -3563,7 +3877,7 @@ document.addEventListener('change',event=>{
   state.sort[scope].dir=Number(control.value)===1?1:-1;
   if(scope==='search')renderSearchView();
   if(scope==='compare')renderCompare([$('cmpU1').value,$('cmpU2').value,$('cmpU3').value].filter(Boolean));
-  if(scope==='major')renderMajor([$('major1').value,$('major2').value,$('major3').value].filter(Boolean));
+  if(scope==='major')renderMajor([$('major1').value,$('major2').value,$('major3').value,$('major4').value].filter(Boolean));
   if(scope==='recommend')renderRecommend();
   if(scope==='region')renderRegion([$('region1').value,$('region2').value].filter(Boolean));
   if(scope==='school')renderSchool();
@@ -4358,6 +4672,283 @@ document.addEventListener('click',event=>{
     });
     button.setAttribute('aria-label','등급별 대학 추천');
   });
+})();
+</script>
+
+
+
+<script id="ver93-pc-refined-autocomplete-runtime">
+(()=>{
+  if(document.body.classList.contains('mobile'))return;
+
+  const pageHeader=document.querySelector('body.pc header');
+  const titleRow=pageHeader?.querySelector('.title-row');
+  const headerNav=pageHeader?.querySelector('.header-nav-stack');
+  if(pageHeader&&titleRow&&headerNav){
+    const portal=headerNav.querySelector('.return-btn');
+    const mobile=headerNav.querySelector('.switch-btn');
+    if(portal){portal.textContent='라이언의 대입포털로 돌아가기';portal.setAttribute('aria-label','라이언의 대입포털로 돌아가기')}
+    if(mobile){mobile.textContent='모바일 버전';mobile.href='https://seiryu1318.github.io/admission_RyanM/';mobile.setAttribute('aria-label','모바일 버전')}
+    titleRow.after(headerNav);
+  }
+
+  const yearSelect=document.getElementById('simpleYear');
+  const typeSelect=document.getElementById('simpleType');
+  const univInput=document.getElementById('simpleUniv');
+  const deptInput=document.getElementById('simpleDept');
+  const deptControl=deptInput?.closest('.simple-control');
+  const univControl=univInput?.closest('.simple-control');
+  if(!yearSelect||!typeSelect||!univInput||!deptInput||!deptControl||!univControl)return;
+
+  const admissionControl=document.createElement('div');
+  admissionControl.id='simpleAdmissionControl';
+  admissionControl.className='simple-control';
+  const admissionLabel=document.createElement('label');
+  admissionLabel.htmlFor='simpleAdmissionInput';
+  admissionLabel.textContent='전형명';
+  const admissionSelect=document.createElement('select');
+  admissionSelect.id='simpleAdmission';
+  admissionSelect.className='v93-native-state-select';
+  admissionSelect.tabIndex=-1;
+  admissionSelect.setAttribute('aria-hidden','true');
+  const admissionInput=document.createElement('input');
+  admissionInput.id='simpleAdmissionInput';
+  admissionInput.type='search';
+  admissionInput.autocomplete='off';
+  admissionInput.placeholder='대학명을 선택하면 전형명이 표시됩니다';
+  admissionInput.setAttribute('aria-label','전형명');
+  admissionControl.append(admissionLabel,admissionSelect,admissionInput);
+  deptControl.before(admissionControl);
+
+  const advancedButton=document.getElementById('simpleAdvancedButton');
+  const resetButton=document.createElement('button');
+  resetButton.id='simpleResetButton';
+  resetButton.type='button';
+  resetButton.className='secondary';
+  resetButton.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a8 8 0 1 0 2.3-5.7L4 7.6"/><path d="M4 3v4.6h4.6"/></svg><span>초기화</span>';
+  advancedButton.after(resetButton);
+
+  const yearsFor=value=>value==='all'?YEARS:value==='recent4'?[2023,2024,2025,2026]:value==='recent2'?[2025,2026]:[Number(value)||2026];
+  const keyFor=(year,type)=>`${year}|${type}`;
+  const byYearType=new Map();
+  for(const row of records){
+    const key=keyFor(row.year,row.type);
+    if(!byYearType.has(key))byYearType.set(key,[]);
+    byYearType.get(key).push(row);
+  }
+  const eligibleRows=()=>{
+    const years=yearsFor(yearSelect.value);
+    const types=typeSelect.value==='all'?TYPES:[typeSelect.value];
+    const rows=[];
+    for(const year of years)for(const type of types)rows.push(...(byYearType.get(keyFor(year,type))||[]));
+    return rows;
+  };
+  const normalizeName=value=>String(value||'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko');
+  const uniqueSorted=values=>[...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ko'));
+  const candidateUniversityNames=(rows,typed)=>{
+    const universities=uniqueSorted(rows.map(row=>row.univ));
+    const normalized=normalizeName(typed);
+    const exact=universities.filter(name=>normalizeName(name)===normalized);
+    const chosen=exact.length?exact:(typed.trim().length>=1?universities.filter(name=>normalizeName(name).includes(normalized)):[]);
+    return {universities,chosen:new Set(chosen)};
+  };
+
+  const createAutocomplete=(input,control,id,label,onChoose,showAllWhenEmpty=false)=>{
+    const popup=document.createElement('div');
+    popup.id=id;
+    popup.className='v93-autocomplete';
+    popup.setAttribute('role','listbox');
+    popup.setAttribute('aria-label',label);
+    popup.hidden=true;
+    control.append(popup);
+    input.removeAttribute('list');
+    input.setAttribute('autocomplete','off');
+    input.setAttribute('aria-autocomplete','list');
+    input.setAttribute('aria-controls',id);
+    input.setAttribute('aria-expanded','false');
+    let values=[];
+    let activeIndex=-1;
+    const close=()=>{
+      popup.hidden=true;
+      input.setAttribute('aria-expanded','false');
+      input.removeAttribute('aria-activedescendant');
+      activeIndex=-1;
+    };
+    const choose=value=>{
+      input.value=value;
+      input.dispatchEvent(new Event('change',{bubbles:true}));
+      close();
+      onChoose?.(value);
+    };
+    const render=()=>{
+      const query=normalizeName(input.value);
+      if(!query&&!showAllWhenEmpty){close();popup.replaceChildren();return []}
+      const matches=(query?values.filter(value=>normalizeName(value).includes(query)):values).slice(0,100);
+      popup.replaceChildren(...matches.map((value,index)=>{
+        const button=document.createElement('button');
+        button.type='button';
+        button.id=`${id}-option-${index}`;
+        button.setAttribute('role','option');
+        button.setAttribute('aria-selected',String(index===activeIndex));
+        button.title=value;
+        button.textContent=value;
+        button.addEventListener('pointerdown',event=>event.preventDefault());
+        button.addEventListener('click',()=>choose(value));
+        return button;
+      }));
+      popup.hidden=!matches.length;
+      input.setAttribute('aria-expanded',String(matches.length>0));
+      if(!matches.length)activeIndex=-1;
+      return matches;
+    };
+    const setValues=next=>{
+      values=next;
+      activeIndex=-1;
+      if(document.activeElement===input)render();
+      else close();
+    };
+    input.addEventListener('focus',render);
+    input.addEventListener('input',()=>{activeIndex=-1;render()});
+    input.addEventListener('keydown',event=>{
+      let options=[...popup.querySelectorAll('[role="option"]')];
+      if(event.key==='ArrowDown'||event.key==='ArrowUp'){
+        if(popup.hidden){render();options=[...popup.querySelectorAll('[role="option"]')]}
+        if(!options.length)return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const delta=event.key==='ArrowDown'?1:-1;
+        activeIndex=(activeIndex+delta+options.length)%options.length;
+        options.forEach((option,index)=>option.setAttribute('aria-selected',String(index===activeIndex)));
+        const active=options[activeIndex];
+        input.setAttribute('aria-activedescendant',active.id);
+        active.scrollIntoView({block:'nearest'});
+        return;
+      }
+      if(event.key==='Enter'&&!popup.hidden&&activeIndex>=0){
+        const active=options[activeIndex];
+        if(active){
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          choose(active.textContent);
+        }
+        return;
+      }
+      if(event.key==='Escape'&&!popup.hidden){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        close();
+      }
+    },true);
+    return {popup,close,render,setValues};
+  };
+
+  let univAutocomplete;
+  let deptAutocomplete;
+  let admissionAutocomplete;
+  let currentAdmissions=[];
+  const syncAdmissionInput=()=>{
+    const typed=admissionInput.value.trim();
+    const exact=currentAdmissions.find(value=>normalizeName(value)===normalizeName(typed))||'';
+    admissionSelect.value=exact;
+    refreshDepartments();
+  };
+  const setAdmissionOptions=(values,previous='')=>{
+    currentAdmissions=values;
+    admissionSelect.replaceChildren();
+    const first=document.createElement('option');
+    first.value='';
+    first.textContent=values.length?'전체 전형명':'대학명을 선택하면 전형명이 표시됩니다';
+    admissionSelect.append(first);
+    for(const value of values){
+      const option=document.createElement('option');
+      option.value=value;
+      option.textContent=value;
+      admissionSelect.append(option);
+    }
+    admissionSelect.disabled=!values.length;
+    if(values.includes(previous))admissionSelect.value=previous;
+    admissionInput.disabled=!values.length;
+    admissionInput.placeholder=values.length?'전형명을 입력하거나 목록에서 선택':'대학명을 선택하면 전형명이 표시됩니다';
+    admissionInput.value=admissionSelect.value;
+    admissionAutocomplete.setValues(values);
+  };
+  const refreshDepartments=()=>{
+    const rows=eligibleRows();
+    const {chosen}=candidateUniversityNames(rows,univInput.value);
+    const selectedAdmission=admissionSelect.value;
+    const departments=uniqueSorted(rows
+      .filter(row=>chosen.has(row.univ)&&(!selectedAdmission||row.admission===selectedAdmission))
+      .map(row=>row.dept));
+    deptAutocomplete.setValues(departments);
+  };
+  const refreshLinkedOptions=()=>{
+    const rows=eligibleRows();
+    const {universities,chosen}=candidateUniversityNames(rows,univInput.value);
+    univAutocomplete.setValues(universities);
+    const previousAdmission=admissionSelect.value;
+    const admissions=uniqueSorted(rows.filter(row=>chosen.has(row.univ)).map(row=>row.admission));
+    setAdmissionOptions(admissions,previousAdmission);
+    refreshDepartments();
+  };
+
+  univAutocomplete=createAutocomplete(univInput,univControl,'simpleUnivAutocomplete','대학명 자동완성',()=>{
+    refreshLinkedOptions();
+    univAutocomplete.close();
+    if(!admissionInput.disabled)admissionInput.focus();
+  });
+  deptAutocomplete=createAutocomplete(deptInput,deptControl,'simpleDeptAutocomplete','학과명 자동완성',()=>{});
+  admissionAutocomplete=createAutocomplete(admissionInput,admissionControl,'simpleAdmissionAutocomplete','전형명 자동완성',value=>{
+    admissionSelect.value=value;
+    refreshDepartments();
+    deptInput.focus();
+  },true);
+
+  yearSelect.addEventListener('change',()=>{univAutocomplete.close();admissionAutocomplete.close();deptAutocomplete.close();refreshLinkedOptions()});
+  typeSelect.addEventListener('change',()=>{univAutocomplete.close();admissionAutocomplete.close();deptAutocomplete.close();refreshLinkedOptions()});
+  univInput.addEventListener('input',refreshLinkedOptions);
+  univInput.addEventListener('change',refreshLinkedOptions);
+  admissionInput.addEventListener('focus',()=>univAutocomplete.close());
+  admissionInput.addEventListener('input',()=>{univAutocomplete.close();syncAdmissionInput()});
+  admissionInput.addEventListener('change',syncAdmissionInput);
+  deptInput.addEventListener('focus',()=>{univAutocomplete.close();admissionAutocomplete.close()},true);
+  document.getElementById('simpleSearchButton')?.addEventListener('click',()=>{univAutocomplete.close();admissionAutocomplete.close();deptAutocomplete.close()},true);
+  document.addEventListener('click',event=>{
+    if(!event.target.closest('#simpleUniv')&&!event.target.closest('#simpleUnivAutocomplete'))univAutocomplete.close();
+    if(!event.target.closest('#simpleAdmissionInput')&&!event.target.closest('#simpleAdmissionAutocomplete'))admissionAutocomplete.close();
+    if(!event.target.closest('#simpleDept')&&!event.target.closest('#simpleDeptAutocomplete'))deptAutocomplete.close();
+  });
+
+  const originalSearchRows=searchRows;
+  searchRows=function(){
+    const rows=originalSearchRows();
+    const typed=admissionInput.value.trim();
+    const query=normalizeName(typed);
+    return query?rows.filter(row=>normalizeName(row.admission).includes(query)):rows;
+  };
+  const originalConditionText=simpleConditionText;
+  simpleConditionText=function(){
+    const base=originalConditionText().split(' / ');
+    const admission=admissionInput.value.trim()||'전체 전형명';
+    return [...base.slice(0,3),admission,...base.slice(3)].join(' / ');
+  };
+
+  resetButton.addEventListener('click',()=>{
+    univAutocomplete.close();
+    admissionAutocomplete.close();
+    deptAutocomplete.close();
+    document.getElementById('searchClear')?.click();
+    yearSelect.value='2026';
+    typeSelect.value='all';
+    univInput.value='';
+    admissionInput.value='';
+    deptInput.value='';
+    applySimpleYears('2026');
+    applySimpleType('all');
+    refreshLinkedOptions();
+    window.scrollTo({top:0,behavior:'auto'});
+  });
+
+  refreshLinkedOptions();
 })();
 </script>
 
